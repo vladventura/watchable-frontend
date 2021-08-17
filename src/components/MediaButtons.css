@@ -1,0 +1,38 @@
+.media-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.media-button {
+  width: 70px;
+  height: 70px;
+  background: #d6d6d6;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  transition: 0.2 ease-in;
+}
+
+.media-button.play {
+  border-left: 1px solid #515151;
+  border-right: 1px solid #515151;
+}
+
+.media-button.forward {
+  border-top-right-radius: 10%;
+}
+
+.media-button.backward {
+  border-top-left-radius: 10%;
+}
+
+.media-button:focus {
+  outline: none;
+}
+
+.media-button:active {
+  background: #b6b6b6;
+}

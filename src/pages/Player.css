@@ -1,0 +1,6 @@
+.main-page {
+  display: grid;
+  grid-template-columns: auto 720px auto;
+  grid-template-rows: auto auto;
+  padding: 1rem 2rem;
+}
