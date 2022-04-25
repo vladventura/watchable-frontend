@@ -1,11 +1,15 @@
 import YouTube from "react-youtube";
-import { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { VideoContext } from "../context/videoContext";
 
 const VideoPlayer = ({ allVideos, onVideoEnd }) => {
   const [currentVideo, setCurrentVideo] = useState({});
-  const { loadedVideoState, playingVideoState, pauseVideo, setPlayerRef } =
-    useContext(VideoContext);
+  const {
+    loadedVideoState,
+    playingVideoState,
+    pauseVideo,
+    setPlayerRef,
+  } = useContext(VideoContext);
   let playerRef = useRef();
 
   useEffect(() => {

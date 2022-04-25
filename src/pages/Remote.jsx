@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { MediaButtons } from "../components/MediaButtons";
 import { SocketContext } from "../context/socketContext";
 

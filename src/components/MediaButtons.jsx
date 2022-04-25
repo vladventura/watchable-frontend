@@ -1,5 +1,5 @@
 import "./MediaButtons.css";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { VideoContext } from "../context/videoContext";
 
 const MediaButtons = ({

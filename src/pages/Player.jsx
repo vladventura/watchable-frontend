@@ -1,16 +1,16 @@
 import "./Player.css";
-import { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { MediaButtons } from "../components/MediaButtons";
-import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { SocketContext } from "../context/socketContext";
 
 const Player = () => {
   const [videos, setVideos] = useState([]);
   const socketContext = useRef(useContext(SocketContext));
   const { socketioClient } = socketContext.current;
-  const history = useHistory();
-  const roomInfo = history.location.state;
+  const location = useLocation();
+  const roomInfo = location.state;
 
   useEffect(() => {
     socketioClient.on("get-videos", (incomingVideos) => {

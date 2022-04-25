@@ -1,5 +1,5 @@
-import { useContext, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { SocketContext } from "../context/socketContext";
 
 const routingMap = {
@@ -8,14 +8,14 @@ const routingMap = {
 };
 
 const Home = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const socketContext = useRef(useContext(SocketContext));
 
   useEffect(() => {
     socketContext.current.connect();
   }, []);
 
-  const onClick = (e) => history.push(routingMap[e.target.id]);
+  const onClick = (e) => navigate(routingMap[e.target.id]);
 
   return (
     <div className="simplepage-container container d-flex flex-column">

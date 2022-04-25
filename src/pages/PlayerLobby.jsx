@@ -1,23 +1,23 @@
 import "./PlayerLobby.css";
-import { useEffect, useContext, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { SocketContext } from "../context/socketContext";
 
 const PlayerLobby = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const socketContext = useRef(useContext(SocketContext));
 
   useEffect(() => {
     socketContext.current.socketioClient.on("room-created", (roomInfo) => {
       // We re-route here
       socketContext.current.setRoomInfo(roomInfo);
-      history.push({
+      navigate({
         pathname: `/player/${roomInfo.id}`,
         state: roomInfo,
       });
     });
     socketContext.current.socketioClient.emit("create-room");
-  }, [history]);
+  }, [navigate]);
 
   return (
     <div className="lobby-container container d-flex flex-column">
