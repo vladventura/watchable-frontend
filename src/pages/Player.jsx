@@ -1,29 +1,26 @@
 import "./Player.css";
-import io from "socket.io-client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { MediaButtons } from "../components/MediaButtons";
 import { useHistory } from "react-router-dom";
-
-const socketioClient = io("http://192.168.1.152:4000");
+import { SocketContext } from "../context/socketContext";
 
 const Player = () => {
   const [videos, setVideos] = useState([]);
+  const socketContext = useRef(useContext(SocketContext));
+  const { socketioClient } = socketContext.current;
   const history = useHistory();
+  const roomInfo = history.location.state;
 
   useEffect(() => {
     socketioClient.on("get-videos", (incomingVideos) => {
-      console.log("Received all videos");
       setVideos(incomingVideos);
     });
     socketioClient.on("new-video-added", (incomingVideos) => {
       console.log("New video added", incomingVideos);
       setVideos(incomingVideos);
     });
-    return () => {
-      socketioClient.disconnect();
-    };
-  }, []);
+  }, [socketioClient]);
 
   const onVideoEnd = () => {
     setVideos(videos.slice(1));
@@ -33,17 +30,17 @@ const Player = () => {
   return (
     <div className="App">
       <div className="main-page">
-        <p>{history.location.state.reducedId}</p>
+        <p>{roomInfo.reducedId}</p>
         <VideoPlayer
           className="video-player"
           allVideos={videos}
           onVideoEnd={onVideoEnd}
         />
-        <ul style={{ justifySelf: "center" }}>
-          <h2>Up Next</h2>
-          {videos.length - 1 > 0 ? (
+        <ul className="up-next-list">
+          <h2 className="up-next-title">Up Next</h2>
+          {videos?.length - 1 > 0 ? (
             videos.slice(1).map((video) => (
-              <li key={video.id} style={{ fontSize: "1rem" }}>
+              <li className="up-next-item" key={video.id}>
                 {video.title} - {video.channelTitle}
               </li>
             ))

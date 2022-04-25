@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-const socketioClient = io("http://192.168.1.152:4000");
+import { useContext, useRef, useState } from "react";
+import { MediaButtons } from "../components/MediaButtons";
+import { SocketContext } from "../context/socketContext";
 
-const AddToQueue = () => {
+const Remote = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
+  const socketContext = useRef(useContext(SocketContext));
+  const { socketioClient } = socketContext.current;
 
-  const onClickItem = (result) => {
-    socketioClient.emit("add-video", result);
-    console.log("clicked");
+  const emitAddVideo = (video) => {
+    if (socketioClient) socketioClient.emit("add-video", video);
   };
-
-  useEffect(() => {
-    return () => {
-      socketioClient.disconnect();
-    };
-  }, []);
 
   const mappedResults =
     results &&
@@ -32,7 +27,12 @@ const AddToQueue = () => {
             </div>
             <div className="media-body">
               <div className="media-heading">{result.title}</div>
-              <button onClick={() => onClickItem(result)} id={result.id}>
+              <button
+                onClick={() => {
+                  emitAddVideo(result);
+                }}
+                id={result.id}
+              >
                 Add
               </button>
             </div>
@@ -85,8 +85,9 @@ const AddToQueue = () => {
           {mappedResults}
         </div>
       </div>
+      <MediaButtons />
     </>
   );
 };
 
-export { AddToQueue };
+export { Remote };

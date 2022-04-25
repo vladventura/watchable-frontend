@@ -4,7 +4,8 @@ import { VideoContext } from "../context/videoContext";
 
 const VideoPlayer = ({ allVideos, onVideoEnd }) => {
   const [currentVideo, setCurrentVideo] = useState({});
-  const { loadVideo, playVideo, pauseVideo } = useContext(VideoContext);
+  const { loadedVideoState, playingVideoState, pauseVideo, setPlayerRef } =
+    useContext(VideoContext);
   let playerRef = useRef();
 
   useEffect(() => {
@@ -17,8 +18,10 @@ const VideoPlayer = ({ allVideos, onVideoEnd }) => {
     console.log(e.target);
     playerRef.current = e.target;
     console.log(playerRef);
+    setPlayerRef(e.target);
   };
 
+  // eslint-disable-next-line
   const onClickPause = (e) => {
     console.log(playerRef);
   };
@@ -34,13 +37,13 @@ const VideoPlayer = ({ allVideos, onVideoEnd }) => {
     console.log("Player status ", status);
     switch (status) {
       case 3:
-        loadVideo(3);
+        loadedVideoState(3);
         break;
       case 2:
         pauseVideo(2);
         break;
       case 1:
-        playVideo(1);
+        playingVideoState(1);
         break;
       default:
         break;

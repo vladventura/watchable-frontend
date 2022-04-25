@@ -4,3 +4,16 @@
   grid-template-rows: auto auto;
   padding: 1rem 2rem;
 }
+
+.up-next-list {
+  justify-self: center;
+}
+
+.up-next-item {
+  font-size: 1rem;
+}
+
+.up-next-item,
+.up-next-title {
+  color: var(--p-color);
+}

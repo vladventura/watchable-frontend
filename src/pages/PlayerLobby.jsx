@@ -1,20 +1,22 @@
 import "./PlayerLobby.css";
-import { useEffect } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import io from "socket.io-client";
-
-const socketioClient = io("http://192.168.1.152:4000");
+import { SocketContext } from "../context/socketContext";
 
 const PlayerLobby = () => {
   const history = useHistory();
+  const socketContext = useRef(useContext(SocketContext));
+
   useEffect(() => {
-    socketioClient.on("room-created", (roomInfo) => {
+    socketContext.current.socketioClient.on("room-created", (roomInfo) => {
+      // We re-route here
+      socketContext.current.setRoomInfo(roomInfo);
       history.push({
         pathname: `/player/${roomInfo.id}`,
         state: roomInfo,
       });
     });
-    socketioClient.emit("create-room");
+    socketContext.current.socketioClient.emit("create-room");
   }, [history]);
 
   return (

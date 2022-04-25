@@ -1,33 +1,29 @@
 import "./RemoteLobby.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import io from "socket.io-client";
-const socketioClient = io("http://192.168.1.152:4000");
+import { SocketContext } from "../context/socketContext";
 
 const RemoteLobby = () => {
+  const socketContext = useRef(useContext(SocketContext));
   const [roomId, setRoomId] = useState("");
   const [error, showError] = useState("");
   const history = useHistory();
   useEffect(() => {
-    socketioClient.on("room-not-found", () => {
+    socketContext.current.socketioClient.on("room-not-found", () => {
       console.log("Sadness");
       showError("Room not found");
     });
 
-    socketioClient.on("joined-success", (roomInfo) => {
+    socketContext.current.socketioClient.on("joined-success", (roomInfo) => {
       history.push({
         pathname: `/remote/${roomInfo.id}`,
         state: roomInfo,
       });
     });
-
-    return () => {
-      socketioClient.disconnect();
-    };
-  }, []);
+  }, [history]);
 
   const joinRoom = () => {
-    if (roomId) socketioClient.emit("join-room", roomId);
+    if (roomId) socketContext.current.socketioClient.emit("join-room", roomId);
   };
 
   return (

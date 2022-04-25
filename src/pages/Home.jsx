@@ -1,4 +1,6 @@
+import { useContext, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import { SocketContext } from "../context/socketContext";
 
 const routingMap = {
   "player-button": "/player",
@@ -7,6 +9,11 @@ const routingMap = {
 
 const Home = () => {
   const history = useHistory();
+  const socketContext = useRef(useContext(SocketContext));
+
+  useEffect(() => {
+    socketContext.current.connect();
+  }, []);
 
   const onClick = (e) => history.push(routingMap[e.target.id]);
 
